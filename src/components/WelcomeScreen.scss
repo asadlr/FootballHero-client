@@ -1,0 +1,20 @@
+.welcome-screen {
+    font-family: Arial, sans-serif;
+    text-align: center;
+
+    // Example Sass nesting 
+    h1 {
+        font-size: 3em; 
+        color: #333; 
+
+        &:hover { // Nested hover effect
+            color: blue; 
+        }
+    }
+}
+
+.hero h1 {
+    font-size: 3em; /* Example size */
+    color: #333;  /* Dark gray color */
+}
+
