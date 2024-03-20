@@ -1,35 +1,47 @@
-import React, { useState } from 'react'; // Add useState 
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 
 const LoginScreen = () => {
     const [usernameOrEmail, setUsernameOrEmail] = useState('');
-    const [password, setPassword] = useState(''); 
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate(); // Use useNavigate hook for navigation
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        setError('');
+        setLoading(true);
+
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ usernameOrEmail, password }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                localStorage.setItem('token', data.token);
+                navigate('/home'); // Use navigate to redirect
+            } else {
+                setError(data.message || 'Login failed. Please try again.');
+            }
+        } catch (error) {
+            setError('Network error. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="login-screen">
-            <h2>Welcome back to FootballHero!</h2>
-            <p>Please enter your username or email and password:</p>
-
-            <form> {/* We'll add submit handling later */}
-                <input 
-                    type="text" 
-                    placeholder="Username or Email" 
-                    value={usernameOrEmail} 
-                    onChange={(e) => setUsernameOrEmail(e.target.value)} 
-                />
-
-                <input 
-                    type="password" 
-                    placeholder="Password" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                />
-
-                <div className="buttons"> 
-                        <button type="button" onClick={() => console.log('Log In Clicked')}>Log In</button>
-                        <button type="button" onClick={() => console.log('Forgot Password Clicked')}>Forgot Password</button>
-                        {/* Add Social Login button later */}
-                    </div>
-            </form>
+            {/* Your form and inputs here */}
+            {error && <p className="error-message">{error}</p>}
+            {/* Include this error message in your form */}
         </div>
     );
 };

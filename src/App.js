@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import WelcomeScreen from './components/WelcomeScreen';
 import LoginScreen from './components/LoginScreen'; 
 import SignupScreen from './components/SignupScreen'; 
@@ -10,6 +11,7 @@ function App() {
     setShowSignupScreen(true); // Modify state to display SignupScreen
 }; 
   return (
+    <Router>
     <div className="App">
       {showLoginScreen ?  
           <LoginScreen /> : 
@@ -21,6 +23,7 @@ function App() {
           /> 
       }
     </div>
+    </Router>
   );
 }
 
